@@ -1,7 +1,8 @@
 ---
 
 ## Get the ISO from : http://h17007.www1.hp.com/us/en/enterprise/servers/products/service_pack/hpsum/index.aspx ##
-HPSUM_ISO_URL: ftp://ftp.hp.com/pub/softlib2/software1/cd-generic/p1282533682/v95625/SPPCUSTOM710.2014_0821.18.iso
+## You can use any method to add ISO , i choose dropbox as its a bit easier
+HPSUM_ISO_URL: https://www.dropbox.com/s/xn24grh2c2o2wpm/HPSUM_7.1.0.2014.iso?dl=1 
 
 HPSUM_ISO_filename: hpsum.iso
 
