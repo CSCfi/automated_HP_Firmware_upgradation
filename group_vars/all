@@ -1,8 +1,11 @@
 ---
 
-hpsum_iso_path: /home/ksingh/media.iso
+hpsum_iso_path: HPSUM_7.1.0.2014.iso 
+
 user: root
-password:  ## IMPORTANT : Dont forget to remove the password once you are done with upgradation
+
+## IMPORTANT : Dont forget to remove the password once you are done with upgradation
+password: Y#8NyoqyYiT
 
 # baseline_path do not change; usually does not require change
 baseline_path: /mnt/HPSUM/hp/swpackages

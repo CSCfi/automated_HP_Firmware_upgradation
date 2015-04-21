@@ -13,7 +13,7 @@
   ignore_errors: yes
 
 - name: Performing inventory for nodes
-  shell: /mnt/HPSUM/hp/swpackages/hpsum -s report -target {{ item }} -targettype Linux -veryv username {{ user }} password {{ password }} --open_firewall;sleep 60 
+  shell: cd {{ baseline_path }}; hpsum -s report -target {{ item }} -targettype Linux -veryv username {{ user }} password {{ password }} --open_firewall;sleep 60 
   with_items: groups['host_list_for_FW_upgrade']
 
 - name: Waiting for HPSUM to release lock
@@ -25,6 +25,6 @@
   ignore_errors: yes
 
 - name: Generating system report for installed Firmwares
-  shell: /mnt/HPSUM/hp/swpackages/hpsum -s -firmware_report -target {{ item }} -targettype Linux -veryv  username {{ user }} password {{ password }} --open_firewall;sleep 60
+  shell: cd {{ baseline_path }}; hpsum -s -firmware_report -target {{ item }} -targettype Linux -veryv  username {{ user }} password {{ password }} --open_firewall;sleep 60
   with_items: groups['host_list_for_FW_upgrade']
 

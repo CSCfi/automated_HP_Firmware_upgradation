@@ -2,7 +2,6 @@
 - hosts: 127.0.0.1 
   connection: local
   gather_facts: no
-  tags: test 
   tasks:
    - name: Creating directory for mounting HPSUM ISO 
      command: mkdir /mnt/HPSUM
@@ -17,7 +16,7 @@
      ignore_errors: yes 
 
    - name: Adding HPSUM baseline
-     command : sh /mnt/HPSUM/hp/swpackages/hpsum add --baselines {{ baseline_path }}
+     shell : cd {{ baseline_path }}; hpsum add --baselines {{ baseline_path }}
      ignore_errors: yes 
      
  
@@ -26,8 +25,8 @@
      ignore_errors: yes
 
    - name: Adding node to HPSUM
-     shell: /mnt/HPSUM/hp/swpackages/hpsum add --nodes {{ item }} user={{ user }} password={{ password }} type=Linux;sleep 60
-     with_items: groups['host_list_for_FW_upgrade']
+     shell: cd {{ baseline_path }}; hpsum add --nodes {{ item }} user={{ user }} password={{ password }} type=Linux;sleep 60
+     with_items: groups["host_list_for_FW_upgrade"]
 
    - name: Waiting for HPSUM to release lock
      local_action: wait_for  timeout=60

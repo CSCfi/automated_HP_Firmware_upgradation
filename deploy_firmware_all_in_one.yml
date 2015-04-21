@@ -9,7 +9,7 @@
      ignore_errors: yes
 
    - name: Updating all the components with the latest firmware release 
-     shell: /mnt/HPSUM/hp/swpackages/hpsum -s -f:rom  -target {{ item }} -targettype Linux -veryv username {{ user }} password {{ password }} --open_firewall;sleep 60
+     shell: {{ baseline_path }}/hpsum -s -f:rom  -target {{ item }} -targettype Linux -veryv username {{ user }} password {{ password }} --open_firewall;sleep 60
      with_items: groups['host_list_for_FW_upgrade']
 
    - name: Waiting for HPSUM to release lock
@@ -36,7 +36,7 @@
      ignore_errors: yes
 
    - name: Readding node to HPSUM
-     shell: /mnt/HPSUM/hp/swpackages/hpsum add --nodes {{ item }} user={{ user }} password={{ password }} type=Linux;sleep 60
+     shell: {{ baseline_path }}/hpsum add --nodes {{ item }} user={{ user }} password={{ password }} type=Linux;sleep 60
      with_items: groups['host_list_for_FW_upgrade']
 
    - name: Waiting for HPSUM to release lock
