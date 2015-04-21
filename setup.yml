@@ -7,8 +7,12 @@
      command: mkdir /mnt/HPSUM
      ignore_errors: yes 
 
+   - name: Downloading HPSUM ISO file 
+     get_url: url={{ HPSUM_ISO_URL }} dest={{ HPSUM_ISO_filename }}
+     ignore_errors: yes
+
    - name: Setting up loopback device
-     command: losetup -r /dev/loop1 {{ hpsum_iso_path }} 
+     command: losetup -r /dev/loop1 {{ HPSUM_ISO_filename }} 
      ignore_errors: yes 
 
    - name: Mounting HPSUM ISO as loopback device
