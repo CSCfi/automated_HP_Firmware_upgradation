@@ -1,0 +1,47 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
+  tasks:
+
+   - name: Cleaning any open HPSUM instances
+     command: pkill -9 hpsum
+     ignore_errors: yes
+
+   - name: Updating all the components with the latest firmware release 
+     shell: /mnt/HPSUM/hp/swpackages/hpsum -s -f:rom  -target {{ item }} -targettype Linux -veryv username {{ user }} password {{ password }} --open_firewall;sleep 60
+     with_items: groups['host_list_for_FW_upgrade']
+
+   - name: Waiting for HPSUM to release lock
+     local_action: wait_for  timeout=30
+
+   - name: Cleaning any open HPSUM instances
+     command: pkill -9 hpsum
+     ignore_errors: yes
+
+   - name: Rebooting Server
+     command: ssh {{ item }} reboot 
+     with_items: groups['host_to_reboot']
+     async: 0
+     poll: 0
+     ignore_errors: true
+
+   - name: Wait for server to restart
+     wait_for: port=22 host={{ item }} delay=5 timeout=600
+     with_items: groups['host_to_reboot']
+     ignore_errors: true
+
+   - name: Cleaning any open HPSUM instances
+     command: pkill -9 hpsum
+     ignore_errors: yes
+
+   - name: Readding node to HPSUM
+     shell: /mnt/HPSUM/hp/swpackages/hpsum add --nodes {{ item }} user={{ user }} password={{ password }} type=Linux;sleep 60
+     with_items: groups['host_list_for_FW_upgrade']
+
+   - name: Waiting for HPSUM to release lock
+     local_action: wait_for  timeout=60
+
+   - name: Cleaning any open HPSUM instances
+     command: pkill -9 hpsum
+     ignore_errors: yes

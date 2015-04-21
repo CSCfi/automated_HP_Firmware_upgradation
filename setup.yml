@@ -1,0 +1,43 @@
+---
+- hosts: 127.0.0.1 
+  connection: local
+  gather_facts: no
+  tags: test 
+  tasks:
+   - name: Creating directory for mounting HPSUM ISO 
+     command: mkdir /mnt/HPSUM
+     ignore_errors: yes 
+
+   - name: Setting up loopback device
+     command: losetup -r /dev/loop1 {{ hpsum_iso_path }} 
+     ignore_errors: yes 
+
+   - name: Mounting HPSUM ISO as loopback device
+     command: mount /dev/loop1 /mnt/HPSUM
+     ignore_errors: yes 
+
+   - name: Adding HPSUM baseline
+     command : sh /mnt/HPSUM/hp/swpackages/hpsum add --baselines {{ baseline_path }}
+     ignore_errors: yes 
+     
+ 
+   - name: Cleaning any open HPSUM instances
+     command: pkill -9 hpsum 
+     ignore_errors: yes
+
+   - name: Adding node to HPSUM
+     shell: /mnt/HPSUM/hp/swpackages/hpsum add --nodes {{ item }} user={{ user }} password={{ password }} type=Linux;sleep 60
+     with_items: groups['host_list_for_FW_upgrade']
+
+   - name: Waiting for HPSUM to release lock
+     local_action: wait_for  timeout=60
+
+   - name: Cleaning any open HPSUM instances
+     command: pkill -9 hpsum
+     ignore_errors: yes
+
+- hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
+  roles:
+   - reporting

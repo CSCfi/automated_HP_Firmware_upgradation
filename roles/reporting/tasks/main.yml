@@ -1,0 +1,30 @@
+---
+
+#- name: Generating firmware report 
+#  command: sh /mnt/HPSUM/hp/swpackages/hpsum -s -firmware_report -target {{ item }} -targettype "Linux"  -veryv --open_firewall  -username hpsum -passwd {{ password  }} -use_sudo
+#  with_items:
+#  - storage0109
+#  register: firmware_report
+ 
+#- debug: var=firmware_report
+#
+- name: Cleaning any open HPSUM instances
+  command: pkill -9 hpsum
+  ignore_errors: yes
+
+- name: Performing inventory for nodes
+  shell: /mnt/HPSUM/hp/swpackages/hpsum -s report -target {{ item }} -targettype Linux -veryv username {{ user }} password {{ password }} --open_firewall;sleep 60 
+  with_items: groups['host_list_for_FW_upgrade']
+
+- name: Waiting for HPSUM to release lock
+  local_action: wait_for  timeout=60
+
+
+- name: Cleaning any open HPSUM instances
+  command: pkill -9 hpsum
+  ignore_errors: yes
+
+- name: Generating system report for installed Firmwares
+  shell: /mnt/HPSUM/hp/swpackages/hpsum -s -firmware_report -target {{ item }} -targettype Linux -veryv  username {{ user }} password {{ password }} --open_firewall;sleep 60
+  with_items: groups['host_list_for_FW_upgrade']
+

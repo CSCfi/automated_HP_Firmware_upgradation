@@ -1,0 +1,21 @@
+Where to get HELP : If you need any help with this playbook , feel free to contact karan.singh@csc.fi
+
+Motivation Statement : To automate firmware updation process for HP servers.
+
+Prerequisite 
+
+
+How to use this playbook :
+
+Step 1 : Update inventory_file with all the hosts names for which you are planning FW upgrade
+
+Step 2 : Execute setup.yml playbook , this playbook will 
+
+# ansible-playbook -i inventory_file setup.yml
+
+/var/hp/log
+
+# ansible-playbook -i inventory_file deploy_firmware_all_in_one.yml
+
+
+# ansible-playbook -i inventory_file generate_report.yml
