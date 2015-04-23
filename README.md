@@ -26,14 +26,15 @@ Step 3 : Update inventory_file with all the host names that need to be upgraded.
 
 Step 4 : Execute setup.yml playbook to begin F/W upgradation. 
 
+```sh
 # ansible-playbook -i inventory_file setup.yml
-
+```
 Step 5 : If you have not added your host to group '[host_to_reboot]', then you need to manuall reboot your hosts inorder to get new F/W into effect.
 
 Step 6 (optional) : You you wish to generate system reports
-
+```sh
 # ansible-playbook -i inventory_file generate_report.yml
-
+```
 ########################
 ## Miscellaneous Info ##
 ########################
@@ -41,7 +42,9 @@ Step 6 (optional) : You you wish to generate system reports
 * All the activity logs will get stored at /var/log/hp
 
 * While ansible playbook is running you can monitor 'admin' and 'HP node' logs using the below command.These logs will tell you what is going on in background.
+```sh
 # tail -100f /var/hp/log/*.raw
+```
 
 
 #######################
@@ -56,7 +59,7 @@ If you need any help with this playbook , feel free to contact karan.singh@csc.f
 
 * Assume you have mounted HPSPP ISO under /mnt/HPSUM
 * These commands should be executed in the same order to get F/W upgraded. [Secret: These commands with the exact same sequence has been implemented in this playbook ]
-
+```sh
 /mnt/HPSUM/hp/swpackages/hpsum --open_firewall getnodes
 /mnt/HPSUM/hp/swpackages/hpsum --open_firewall getbaselines
 
@@ -74,4 +77,5 @@ If you need any help with this playbook , feel free to contact karan.singh@csc.f
 
 /mnt/HPSUM/hp/swpackages/hpsum shutdownengine
 /mnt/HPSUM/hp/swpackages/hpsum --open_firewall --use_latest -s -f:rom -target $hostname -targettype Linux -veryv -username root -password $rootpassword 
+```
 
