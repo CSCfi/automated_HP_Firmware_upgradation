@@ -1,30 +1,38 @@
 ---
-
-#- name: Generating firmware report 
-#  command: sh /mnt/HPSUM/hp/swpackages/hpsum -s -firmware_report -target {{ item }} -targettype "Linux"  -veryv --open_firewall  -username hpsum -passwd {{ password  }} -use_sudo
-#  with_items:
-#  - storage0109
-#  register: firmware_report
- 
-#- debug: var=firmware_report
-#
 - name: Cleaning any open HPSUM instances
-  command: pkill -9 hpsum
-  ignore_errors: yes
-
-- name: Performing inventory for nodes
-  shell: cd {{ baseline_path }}; hpsum -s report -target {{ item }} -targettype Linux -veryv username {{ user }} password {{ password }} --open_firewall;sleep 60 
-  with_items: groups['host_list_for_FW_upgrade']
+  command: /mnt/HPSUM/hp/swpackages/hpsum shutdownengine
+  ignore_errors: True
 
 - name: Waiting for HPSUM to release lock
   local_action: wait_for  timeout=60
-
-
-- name: Cleaning any open HPSUM instances
-  command: pkill -9 hpsum
+  ignore_errors: True
+ 
+- name: Performing node reporting 
+  command: /mnt/HPSUM/hp/swpackages/hpsum --open_firewall -s report -target {{ item }} -targettype Linux -veryv -username {{ user }} -password {{ password }}
+  with_items: groups['host_list_for_FW_upgrade']
   ignore_errors: yes
 
-- name: Generating system report for installed Firmwares
-  shell: cd {{ baseline_path }}; hpsum -s -firmware_report -target {{ item }} -targettype Linux -veryv  username {{ user }} password {{ password }} --open_firewall;sleep 60
-  with_items: groups['host_list_for_FW_upgrade']
+- name: Waiting for HPSUM to release lock
+  local_action: wait_for  timeout=60
+  ignore_errors: True
 
+- name: Cleaning any open HPSUM instances
+  command: /mnt/HPSUM/hp/swpackages/hpsum shutdownengine 
+  ignore_errors: True
+
+- name: Waiting for HPSUM to release lock
+  local_action: wait_for  timeout=60
+  ignore_errors: True
+
+- name: Generating reports for installed Firmwares
+  shell: /mnt/HPSUM/hp/swpackages/hpsum --open_firewall -s -firmware_report -target {{ item }} -targettype Linux -veryv  -username {{ user }} -password {{ password }} ;sleep 60
+  with_items: groups['host_list_for_FW_upgrade']
+  ignore_errors: yes
+
+- name: Waiting for HPSUM to release lock
+  local_action: wait_for  timeout=60
+  ignore_errors: True
+
+- name: Cleaning any open HPSUM instances
+  command: /mnt/HPSUM/hp/swpackages/hpsum shutdownengine
+  ignore_errors: True

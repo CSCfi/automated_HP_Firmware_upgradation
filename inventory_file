@@ -1,7 +1,7 @@
 [all]
 
 [host_list_for_FW_upgrade]
-pouta-s04
+pouta-s01
 
 [host_to_reboot]
 
