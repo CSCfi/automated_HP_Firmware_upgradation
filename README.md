@@ -60,7 +60,7 @@ If you need any help with this playbook , feel free to contact karan.singh@csc.f
 * Assume you have mounted HPSPP ISO under /mnt/HPSUM
 * These commands should be executed in the same order to get F/W upgraded. 
 ```sh 
-[Secret: These commands with the exact same sequence has been implemented in this playbook ]
+[Secret] These commands with the exact same sequence has been implemented in this playbook
 ```
 ```sh
 /mnt/HPSUM/hp/swpackages/hpsum --open_firewall getnodes
