@@ -1,0 +1,33 @@
+---
+- name: Clearing any open HPSUM instances
+  shell: /mnt/HPSUM/hp/swpackages/hpsum shutdownengine
+  ignore_errors: True
+
+- name: killing HPSUM process
+  shell: pkill -9 hpsum
+  ignore_errors: True
+
+- name: Updating all the components with the latest firmware release
+  shell: /mnt/HPSUM/hp/swpackages/hpsum --open_firewall --use_latest -s -f:rom  -target {{ item }} -targettype Linux -veryv -username {{ user }} -password {{ password }}
+  with_items: groups['host_list_for_FW_upgrade']
+  ignore_errors: True
+
+- name: Waiting for HPSUM to release lock
+  local_action: wait_for  timeout=30
+  ignore_errors: True
+
+- name: Rebooting Server
+  command: ssh {{ item }} reboot
+  with_items: groups['host_to_reboot']
+  async: 0
+  poll: 0
+  ignore_errors: True
+
+- name: Wait for server to restart
+  wait_for: port=22 host={{ item }} delay=5 timeout=600
+  with_items: groups['host_to_reboot']
+  ignore_errors: True
+
+- name: Clearing any open HPSUM instances
+  shell: /mnt/HPSUM/hp/swpackages/hpsum shutdownengine
+  ignore_errors: True
