@@ -5,7 +5,7 @@ HPSUM_ISO_path: /tmp/hpsum.iso
 user: root
 
 ## IMPORTANT : Dont forget to remove the password once you are done with upgradation
-password: Y#8NyoqyYiT
+password: ##Update_your_HP_node_root_password_here 
 
 # baseline_path do not change; usually does not require change
 baseline_path: /mnt/HPSUM/hp/swpackages
