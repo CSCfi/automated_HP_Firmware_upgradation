@@ -16,22 +16,22 @@ This playbook  automates firmware updation process for HP servers by using HP Sm
 ## Usage ##
 ###########
 
-Step 1 : Download HP Service Pack for Proliant ISO file from the below URL
+**Step 1 :** Download HP Service Pack for Proliant ISO file from the below URL
 http://h17007.www1.hp.com/us/en/enterprise/servers/products/service_pack/spp/index.aspx
 To download this you would require valid HP Passport account that have rights to download software support services from HP
 
-Step 2 : Once you have downloaded HPSPP ISO, place it under automated_HP_Firmware_upgradation repository with file name as 'hpsum.iso' 
+**Step 2 :** Once you have downloaded HPSPP ISO, place it under automated_HP_Firmware_upgradation repository with file name as 'hpsum.iso' 
 
-Step 3 : Update inventory_file with all the host names that need to be upgraded. 
+**Step 3 :** Update inventory_file with all the host names that need to be upgraded. 
 
-Step 4 : Execute setup.yml playbook to begin F/W upgradation. 
+**Step 4 :** Execute setup.yml playbook to begin F/W upgradation. 
 
 ```sh
 # ansible-playbook -i inventory_file setup.yml
 ```
-Step 5 : If you have not added your host to group '[host_to_reboot]', then you need to manuall reboot your hosts inorder to get new F/W into effect.
+**Step 5 :** If you have not added your host to group '[host_to_reboot]', then you need to manuall reboot your hosts inorder to get new F/W into effect.
 
-Step 6 (optional) : You you wish to generate system reports
+**Step 6 (optional) :** You you wish to generate system reports
 ```sh
 # ansible-playbook -i inventory_file generate_report.yml
 ```
