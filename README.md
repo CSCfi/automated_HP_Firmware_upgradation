@@ -2,7 +2,7 @@
 ## About This Playbook ##
 #########################
 
-This playbook  automates firmware updation process for HP servers by using HP Smart Update Manager (SUM) utility and software repositories using HPSPP ( HP Service Pack for Proliant )
+Do not use This playbook. It used to automate firmware updation process for HP servers by using HP Smart Update Manager (SUM) utility and software repositories using HPSPP ( HP Service Pack for Proliant )
 
 ##################
 ## Prerequisite ##
